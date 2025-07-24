@@ -14,7 +14,7 @@ from .types import (
 )
 from .auto_init import auto_initialize, create_exception_catcher
 
-__version__ = "1.0.1"
+__version__ = "1.0.4"
 __all__ = [
     "MiraSentinelExceptionCatcher",
     "MiraSentinelConfig", 

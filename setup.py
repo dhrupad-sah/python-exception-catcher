@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="dhrupad-sah-exception-catcher",
-    version="1.0.1",
+    version="1.0.4",
     author="Mira Sentinel Team",
     author_email="noreply@example.com",
     description="Automatically catch and report exceptions to Mira Sentinel with rich context and log integration",

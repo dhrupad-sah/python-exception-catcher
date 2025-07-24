@@ -236,24 +236,18 @@ class MiraSentinelExceptionCatcher:
         return await self._send_to_sentinel(context)
     
     async def test_connection(self) -> bool:
-        """Test the connection to Mira Sentinel."""
+        """Test the connection to Mira Sentinel without sending fake exceptions."""
         try:
-            test_error = Exception("Connection test from dhrupad-sah-exception-catcher")
-            context = self._build_exception_context(
-                test_error, 
-                "manual", 
-                {
-                    "connection_test": True,
-                    "timestamp": datetime.now(timezone.utc).isoformat()
-                }
+            # Just test if the base URL is reachable
+            base_url = self.config.sentinel_url.rstrip('/')
+            
+            response = await self.client.get(
+                base_url,
+                timeout=5.0
             )
             
-            # Add test identifier
-            context.context["custom"] = context.context.get("custom", {})
-            context.context["custom"]["is_connection_test"] = True
-            
-            response = await self._send_to_sentinel(context)
-            return response.status != "error"
+            # If we get any response (even 404), the server is reachable
+            return response.status_code < 500
             
         except Exception as e:
             print(f"[MiraSentinel] Connection test failed: {e}")
