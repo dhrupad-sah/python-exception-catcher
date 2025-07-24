@@ -1,0 +1,73 @@
+name: Test and Publish
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [published]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install PDM
+      run: |
+        pip install pdm
+    
+    - name: Install dependencies
+      run: |
+        pdm install -d
+    
+    - name: Run basic tests
+      run: |
+        python test_basic.py
+    
+    - name: Run linting
+      run: |
+        pdm run black --check src/
+        pdm run isort --check-only src/
+    
+    - name: Run type checking
+      run: |
+        pdm run mypy src/ || true  # Don't fail on mypy errors for now
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install PDM
+      run: |
+        pip install pdm
+    
+    - name: Build package
+      run: |
+        pdm build
+    
+    - name: Publish to PyPI
+      env:
+        PDM_PUBLISH_USERNAME: __token__
+        PDM_PUBLISH_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        pdm publish
