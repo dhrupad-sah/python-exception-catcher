@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="dhrupad-sah-exception-catcher",
-    version="1.0.0",
+    version="1.0.1",
     author="Mira Sentinel Team",
     author_email="noreply@example.com",
     description="Automatically catch and report exceptions to Mira Sentinel with rich context and log integration",
@@ -30,7 +30,9 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
-        "Topic :: Software Development :: Debugging",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Software Development :: Quality Assurance",
+        "Topic :: System :: Logging",
         "Topic :: System :: Monitoring",
     ],
     package_dir={"": "src"},
