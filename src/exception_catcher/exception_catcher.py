@@ -6,7 +6,7 @@ import traceback
 import platform
 import asyncio
 import threading
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, Optional, Callable, List
 from urllib.parse import urljoin
 import httpx
@@ -196,7 +196,7 @@ class MiraSentinelExceptionCatcher:
             context = self._build_exception_context(
                 error, 
                 "automatic", 
-                {"exception_type": exception_type, "timestamp": datetime.utcnow().isoformat()}
+                {"exception_type": exception_type, "timestamp": datetime.now(timezone.utc).isoformat()}
             )
             
             # Send to Mira Sentinel
@@ -244,7 +244,7 @@ class MiraSentinelExceptionCatcher:
                 "manual", 
                 {
                     "connection_test": True,
-                    "timestamp": datetime.utcnow().isoformat()
+                    "timestamp": datetime.now(timezone.utc).isoformat()
                 }
             )
             
@@ -269,7 +269,7 @@ class MiraSentinelExceptionCatcher:
         if additional_context is None:
             additional_context = {}
         
-        timestamp = datetime.utcnow().isoformat()
+        timestamp = datetime.now(timezone.utc).isoformat()
         
         # Get system information
         if HAS_PSUTIL:

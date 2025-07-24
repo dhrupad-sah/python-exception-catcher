@@ -1,6 +1,6 @@
 [project]
 name = "dhrupad-sah-exception-catcher"
-version = "1.0.1"
+version = "1.0.2"
 description = "Automatically catch and report exceptions to Mira Sentinel with rich context and log integration for AI-powered debugging and automatic fix generation"
 authors = [
     {name = "Mira Sentinel Team", email = "noreply@example.com"},
